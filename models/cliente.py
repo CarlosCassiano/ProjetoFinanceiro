@@ -16,7 +16,7 @@ class Cliente(db.Model):
     consultor = db.Column(TEXT, nullable=False)
     observacao = db.Column(TEXT, nullable=True)
 
-    def __repr__(self):
+    def as_dict(self):
         return{
             'id': str(self.id),
             'nome': self.nome,
