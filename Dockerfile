@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# Adiciona pacotes necessários para compilar psycopg2
+RUN apt-get update && apt-get install -y gcc libpq-dev
+
 WORKDIR /app
 
 COPY requirements.txt .

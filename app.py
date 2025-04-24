@@ -5,6 +5,7 @@ from db import db
 from models.cliente import Cliente
 from models.vendedores import Vendedor
 from models.cidades import Cidade
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -122,4 +123,4 @@ def listar_cidades():
     return jsonify([cidade.as_dict() for cidade in cidades]), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0')

@@ -1,17 +1,6 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    ports:
-      - "8080:5000"
-    volumes:
-      - .:/app
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/clientes
-    depends_on:
-      - db
-
   db:
     image: postgres:15
     restart: always
@@ -21,6 +10,26 @@ services:
       POSTGRES_DB: clientes
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    command: ["postgres", "-c", "shared_preload_libraries=uuid-ossp"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d clientes"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  
+  web:
+    build: .
+    ports:
+      - "8080:5000"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/clientes
+    depends_on:
+      db:
+        condition: service_healthy
+    command: bash ./init_db.sh && flask run --host=0.0.0.0
 
 volumes:
   postgres_data:
