@@ -1,12 +1,21 @@
 from flask import Flask, request, jsonify, render_template
 from flask_migrate import Migrate
+from flask_cors import CORS
 from db import db
 from models.cliente import Cliente
+from models.vendedores import Vendedor
+from models.cidades import Cidade
 
 app = Flask(__name__)
+CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/clientes'
+# Roda no docker
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/clientes')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Rodando localmente no pc
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/clientes'
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -66,6 +75,51 @@ def deletar_cliente(cliente_id):
     db.session.commit()
     return jsonify({'message': 'Cliente deletado com sucesso!'}), 200
 
+#Cadastrar vendedor
+@app.route('/adicionar-vendedor', methods=['POST'])
+def adicionar_vendedor():
+    data = request.get_json()
+    nome_vendedor = data.get('vendedor')
+
+    # Verifica se o vendedor já existe
+    if Vendedor.query.filter_by(nome=nome_vendedor).first():
+        return jsonify({'message': 'Vendedor já existe!'}), 400
+
+    # Cria e adiciona um novo vendedor
+    novo_vendedor = Vendedor(nome=nome_vendedor)
+    db.session.add(novo_vendedor)
+    db.session.commit()
+
+    return jsonify({'message': 'Vendedor adicionado com sucesso!'}), 201
+
+#Listar vendedores
+@app.route('/vendedores', methods=['GET'])
+def listar_vendedores():
+    vendedores = Vendedor.query.all()
+    return jsonify([vendedor.as_dict() for vendedor in vendedores]), 200
+
+#Cadastrar cidade
+@app.route('/adicionar-cidade', methods=['POST'])
+def adicionar_cidade():
+    data = request.get_json()
+    nome_cidade = data.get('cidade')
+
+    # Verifica se a cidade já existe
+    if Cidade.query.filter_by(cidade=nome_cidade).first():
+        return jsonify({'message': 'Cidade já existe!'}), 400
+
+    # Cria e adiciona uma nova cidade
+    nova_cidade = Cidade(cidade=nome_cidade)
+    db.session.add(nova_cidade)
+    db.session.commit()
+
+    return jsonify({'message': 'Cidade adicionada com sucesso!'}), 201
+
+#Listar cidades
+@app.route('/cidades', methods=['GET'])
+def listar_cidades():
+    cidades = Cidade.query.all()
+    return jsonify([cidade.as_dict() for cidade in cidades]), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')

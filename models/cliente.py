@@ -6,8 +6,8 @@ class Cliente(db.Model):
     __tablename__ = 'clientes'
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=func.uuid_generate_v4())
     nome = db.Column(TEXT, nullable=False)
-    cpf = db.Column(TEXT, nullable=False, unique=True)
-    cnpj = db.Column(TEXT, nullable=False, unique=True)
+    cpf = db.Column(TEXT, nullable=False)
+    cnpj = db.Column(TEXT, nullable=False)
     vendedor = db.Column(TEXT, nullable=False)
     data = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     localizacao = db.Column(TEXT, nullable=False)
