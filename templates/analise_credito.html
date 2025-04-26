@@ -2,10 +2,10 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Clientes</title>
+    <title>Analise de Credito</title>
 </head>
 <body>
-    <h1>Cadastrar Cliente</h1>
+    <h1>Verificar credito</h1>
     <form id="cliente-form">
         <input type="text" name="nome" placeholder="Nome" required><br>
         <input type="text" name="cpf" placeholder="CPF"><br>
@@ -17,8 +17,7 @@
         <select name="localizacao" id="localizacao-select">
             <option value="">Selecione a Cidade</option>
             <!-- As opções de localizações serão inseridas aqui pelo JS -->
-        </select><br>
-        <!--<input type="text" name="situacao" placeholder="Situação"><br>-->
+        </select><br>    
         <select name="situacao" id="situacao-select">
             <option value="">Selecione a Situação</option>
             <option value="Aprovado">Aprovado</option>
@@ -36,7 +35,7 @@
         <textarea name="observacao" placeholder="Observação"></textarea><br>
         <button type="submit">Cadastrar</button>
     </form>
-    <h2>Clientes Cadastrados</h2>
+    <h2>Verificados</h2>
     <table id="tabela-clientes" border="1">
         <thead>
             <tr>
@@ -58,6 +57,6 @@
         </tbody>
     </table>
 
-    <script src="/static/js/script.js"></script>
+    <script src="/static/js/scriptAnalise.js"></script>
 </body>
 </html>
