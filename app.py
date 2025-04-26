@@ -206,4 +206,6 @@ def consultar_tipos_equipamentos():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    app.run(debug=False, host='0.0.0.0')
+
+# app.run(debug=True, host='0.0.0.0', port=8080) # Para rodar localmente, descomente esta linha e comente a linha acima
