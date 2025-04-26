@@ -37,5 +37,28 @@ check_db_connection
 # Executa migrações
 flask db upgrade
 
+# Cria usuário admin se não existir
+python << END
+import os
+from app import app, db
+from models.usuariosLogin import UsuarioLogin
+
+with app.app_context():
+    admin_user = os.getenv('FLASK_ADMIN_USER', 'admin')
+    admin_pass = os.getenv('FLASK_ADMIN_PASSWORD', 'Admin1234')
+    
+    if not UsuarioLogin.query.filter_by(usuario=admin_user).first():
+        admin = UsuarioLogin(
+            usuario=admin_user,
+            tipo='admin'
+        )
+        admin.senha = admin_pass  # Isso vai gerar o hash automaticamente
+        db.session.add(admin)
+        db.session.commit()
+        print(f"[SUCCESS] Usuário admin criado: {admin_user}")
+    else:
+        print("[INFO] Usuário admin já existe")
+END
+
 # Inicia a aplicação
 exec flask run --host=0.0.0.0 --port=5000

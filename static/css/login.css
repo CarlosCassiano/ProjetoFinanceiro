@@ -1,0 +1,154 @@
+
+:root {
+    --cor-primaria: rgb(1, 174, 214);
+    --cor-primaria-escura: rgb(1, 154, 184);
+    --cor-texto: #333333;
+    --cor-texto-claro: #666666;
+    --cor-borda: #dddddd;
+    --cor-fundo: #f5f9fa;
+    --cor-erro: #dc3545;
+    --cor-sucesso: #28a745;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background-image: linear-gradient(135deg, rgba(1, 174, 214, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+/* Container do Login */
+.login-container {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--cor-primaria);
+}
+
+/* Logo */
+.logo-container {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.logo {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+/* Cabeçalho */
+.login-container h2 {
+    color: var(--cor-primaria);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.text-muted {
+    color: var(--cor-texto-claro) !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 0.95rem;
+}
+
+/* Formulário */
+#loginForm {
+    margin-top: 1rem;
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--cor-texto);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-control {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.form-control:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 0.25rem rgba(1, 174, 214, 0.15);
+    outline: none;
+}
+
+/* Botão */
+.btn-login {
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    padding: 0.85rem;
+    font-weight: 500;
+    width: 100%;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
+.btn-login:hover {
+    background-color: var(--cor-primaria-escura);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(1, 174, 214, 0.25);
+}
+
+/* Mensagem */
+#mensagem {
+    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+/* Sobrescrevendo Bootstrap */
+.btn-primary {
+    --bs-btn-bg: var(--cor-primaria);
+    --bs-btn-border-color: var(--cor-primaria);
+    --bs-btn-hover-bg: var(--cor-primaria-escura);
+    --bs-btn-hover-border-color: var(--cor-primaria-escura);
+    --bs-btn-active-bg: var(--cor-primaria-escura);
+    --bs-btn-active-border-color: var(--cor-primaria-escura);
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .login-container {
+        padding: 1.75rem;
+    }
+    
+    .logo {
+        max-width: 150px;
+    }
+}

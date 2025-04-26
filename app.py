@@ -1,15 +1,18 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session, redirect
 from flask_migrate import Migrate
 from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
 from db import db
 from models.cliente import Cliente
 from models.vendedores import Vendedor
 from models.cidades import Cidade
 from models.equipamentos import Equipamento
 from models.tipo_equipamento import TipoEquipamento
+from models.usuariosLogin import UsuarioLogin
 import os
 
 app = Flask(__name__)
+app.secret_key = 'testando_chave_secreta'  # Chave secreta para sessões
 CORS(app)
 
 # Roda no docker
@@ -26,16 +29,36 @@ migrate = Migrate(app, db)
 #Index
 @app.route('/')
 def index():
+    # Verifica se o usuário está logado (na session)
+    if 'usuario_id' not in session:
+        return render_template('login.html')
+    return render_template('inicial.html')
+
+@app.route('/inicial.html')
+def inicial():
+    if 'usuario_id' not in session:
+        return redirect('/')
     return render_template('inicial.html')
 
 @app.route('/analise_credito')
 def analise_credito():
+    if 'usuario_id' not in session:
+        return redirect('/')
     return render_template('analise_credito.html')
 
 @app.route('/equipamentos')
 def equipamentos():
+    if 'usuario_id' not in session:
+        return redirect('/')
     return render_template('equipamentos.html')
 
+@app.route('/cadastro-usuario')
+def cadastro_usuario():
+    if 'usuario_id' not in session or session.get('tipo_usuario') != 'admin':
+        return redirect('/')
+    return render_template('cadastro_usuario.html')
+
+###################################################################################################
 
 #Cadastrar cliente
 @app.route('/clientes', methods=['POST'])
@@ -86,6 +109,8 @@ def deletar_cliente(cliente_id):
     db.session.commit()
     return jsonify({'message': 'Cliente deletado com sucesso!'}), 200
 
+###################################################################################################
+
 #Cadastrar vendedor
 @app.route('/adicionar-vendedor', methods=['POST'])
 def adicionar_vendedor():
@@ -108,6 +133,8 @@ def adicionar_vendedor():
 def listar_vendedores():
     vendedores = Vendedor.query.all()
     return jsonify([vendedor.as_dict() for vendedor in vendedores]), 200
+
+###################################################################################################
 
 #Cadastrar cidade
 @app.route('/adicionar-cidade', methods=['POST'])
@@ -132,6 +159,7 @@ def listar_cidades():
     cidades = Cidade.query.all()
     return jsonify([cidade.as_dict() for cidade in cidades]), 200
 
+###################################################################################################
 
 #Cadastrar equipamento
 @app.route('/equipamento', methods=['POST'])
@@ -187,6 +215,8 @@ def deletar_equipamento(equipamento_id):
     db.session.commit()
     return jsonify({'message': 'Equipamento deletado com sucesso!'}), 200
 
+###################################################################################################
+
 #Cadastrar tipo de equipamento
 @app.route('/tipo_equipamento', methods=['POST'])
 def cadastrar_tipo_equipamento():
@@ -203,6 +233,112 @@ def cadastrar_tipo_equipamento():
 def consultar_tipos_equipamentos():
     tipos_equipamentos = TipoEquipamento.query.all()
     return jsonify([tipo_equipamento.as_dict() for tipo_equipamento in tipos_equipamentos]), 200
+
+##############################################################################
+
+# Cadastrar usuario (ROTA ATUALIZADA)
+@app.route('/usuarios', methods=['POST'])
+def cadastrar_usuario():
+    #Verifica se o usuario é admin
+    if session.get('tipo_usuario') != 'admin':
+        return jsonify({'message': 'Acesso negado! Somente administradores podem cadastrar usuários.'}), 403
+
+    data = request.get_json()
+    
+    # Validação básica
+    if not all(field in data for field in ['usuario', 'senha', 'tipo']):
+        return jsonify({'message': 'Dados incompletos'}), 400
+    
+    # Verifica se usuário já existe
+    if UsuarioLogin.query.filter_by(usuario=data['usuario']).first():
+        return jsonify({'message': 'Usuário já existe'}), 409
+    
+    # Cria usuário com senha hasheada
+    novo_usuario = UsuarioLogin(
+        usuario=data['usuario'],
+        tipo=data['tipo']
+    )
+    novo_usuario.senha = data['senha']  # Usa o setter que faz o hash automaticamente
+    
+    db.session.add(novo_usuario)
+    db.session.commit()
+    
+    return jsonify({
+        'message': 'Usuário cadastrado com sucesso!',
+        'usuario': novo_usuario.as_dict()
+    }), 201
+
+# Consultar usuarios (ROTA ATUALIZADA - Já estava correta)
+@app.route('/usuarios', methods=['GET'])
+def consultar_usuarios():
+    usuarios = UsuarioLogin.query.all()
+    return jsonify([usuario.as_dict() for usuario in usuarios]), 200
+
+# Listar apenas um usuario (ROTA ATUALIZADA - Já estava correta)
+@app.route('/usuarios/<uuid:usuario_id>', methods=['GET'])
+def consultar_usuario(usuario_id):
+    usuario = UsuarioLogin.query.get_or_404(usuario_id)
+    return jsonify(usuario.as_dict()), 200
+
+# Atualizar usuario (ROTA ATUALIZADA)
+@app.route('/usuarios/<uuid:usuario_id>', methods=['PATCH'])
+def atualizar_usuario(usuario_id):
+    usuario = UsuarioLogin.query.get_or_404(usuario_id)
+    data = request.get_json()
+    
+    # Atualiza campos, tratando senha separadamente
+    for key, value in data.items():
+        if key == 'senha':
+            usuario.senha = value  # Usa o setter que faz o hash
+        elif key in ['usuario', 'tipo']:
+            setattr(usuario, key, value)
+    
+    db.session.commit()
+    
+    return jsonify({
+        'message': 'Usuário atualizado com sucesso!',
+        'usuario': usuario.as_dict()
+    }), 200
+
+# Deletar usuario (ROTA ATUALIZADA - Já estava correta)
+@app.route('/usuarios/<uuid:usuario_id>', methods=['DELETE'])
+def deletar_usuario(usuario_id):
+    usuario = UsuarioLogin.query.get_or_404(usuario_id)
+    db.session.delete(usuario)
+    db.session.commit()
+    return jsonify({'message': 'Usuário deletado com sucesso!'}), 200
+
+# ROTA NOVA: Autenticação
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    
+    if not all(field in data for field in ['usuario', 'senha']):
+        return jsonify({'message': 'Usuário e senha são obrigatórios'}), 400
+    
+    usuario = UsuarioLogin.query.filter_by(usuario=data['usuario']).first()
+    
+    if usuario and usuario.verificar_senha(data['senha']):
+        # Cria a sessão do usuário
+        session['usuario_id'] = str(usuario.id)
+        session['usuario_nome'] = usuario.usuario
+        session['tipo_usuario'] = usuario.tipo
+        
+        return jsonify({
+            'message': 'Login bem-sucedido',
+            'usuario': usuario.as_dict(),
+            'redirect': '/inicial.html'  # Adiciona URL para redirecionamento
+        }), 200
+    
+    return jsonify({'message': 'Credenciais inválidas'}), 401
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    # Remove os dados da sessão
+    session.pop('usuario_id', None)
+    session.pop('usuario_nome', None)
+    session.pop('tipo_usuario', None)
+    return jsonify({'message': 'Logout realizado com sucesso', 'redirect': '/'}), 200
 
 
 if __name__ == '__main__':

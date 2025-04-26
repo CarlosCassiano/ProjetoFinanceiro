@@ -1,0 +1,186 @@
+
+/* Estilos Gerais */
+:root {
+    --cor-primaria: rgb(1, 174, 214);
+    --cor-primaria-escura: rgb(1, 154, 184);
+    --cor-texto: #333333;
+    --cor-texto-claro: #666666;
+    --cor-borda: #dddddd;
+    --cor-fundo: #f5f5f5;
+    --cor-sucesso: #28a745;
+    --cor-erro: #dc3545;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: var(--cor-primaria);
+    margin: 20px 0;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.2rem;
+    border-bottom: 2px solid var(--cor-primaria);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+/* Formulário */
+#equipamento-form {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+#equipamento-form select,
+#equipamento-form input[type="text"],
+#equipamento-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#equipamento-form select:focus,
+#equipamento-form input[type="text"]:focus,
+#equipamento-form textarea:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(1, 174, 214, 0.2);
+}
+
+#equipamento-form textarea {
+    min-height: 100px;
+    resize: vertical;
+    grid-column: span 2;
+}
+
+#equipamento-form button[type="submit"] {
+    grid-column: span 2;
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#equipamento-form button[type="submit"]:hover {
+    background-color: var(--cor-primaria-escura);
+    transform: translateY(-2px);
+}
+
+/* Tabela */
+#tabela-equipamentos {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+#tabela-equipamentos thead {
+    background-color: var(--cor-primaria);
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+#tabela-equipamentos th {
+    padding: 12px 10px;
+    text-align: left;
+    font-weight: 600;
+}
+
+#tabela-equipamentos td {
+    padding: 10px;
+    border: 1px solid var(--cor-borda);
+    vertical-align: top;
+}
+
+#tabela-equipamentos tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#tabela-equipamentos tbody tr:hover {
+    background-color: rgba(1, 174, 214, 0.1);
+}
+
+/* Status */
+.status-configurar {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.status-configurado {
+    color: var(--cor-sucesso);
+    font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    #equipamento-form {
+        grid-template-columns: 1fr;
+    }
+    
+    #equipamento-form textarea,
+    #equipamento-form button[type="submit"] {
+        grid-column: span 1;
+    }
+    
+    #tabela-equipamentos {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    #equipamento-form {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
