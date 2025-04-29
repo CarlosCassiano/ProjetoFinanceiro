@@ -16,34 +16,15 @@
             <div class="card-body">
                 <a href="analise_credito" class="btn btn-primary mb-2 d-block">Análise de Crédito</a>
                 <a href="equipamentos" class="btn btn-primary mb-2 d-block">Equipamentos</a>
+                <p>Tipo de usuário: {{ tipo_usuario }}</p>
+                {% if tipo_usuario == 'admin' %}
                 <a href="cadastro-usuario" class="btn btn-primary mb-2 d-block">Cadastro de Usuários</a>
-                <button id="btnLogout" class="btn btn-danger mt-3 d-block">Sair</button>
+                {% endif %}
+                <button id="btnLogout"  class="btn btn-danger mt-3 d-block">Sair</button>
             </div>
         </div>
     </div>
 
-    <script>
-
-        document.getElementById('btnLogout').addEventListener('click', function() {
-    fetch('/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            // Limpa o sessionStorage/localStorage
-            sessionStorage.removeItem('usuario_nome');
-            sessionStorage.removeItem('tipo_usuario');
-            // Redireciona para a página de login
-            window.location.href = '/';
-        }
-    })
-    .catch(error => {
-        console.error('Erro ao fazer logout:', error);
-    });
-});
-    </script>
+    <script src="/static/js/scriptInicial.js"></script>
 </body>
 </html>

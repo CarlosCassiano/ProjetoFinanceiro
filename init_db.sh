@@ -45,7 +45,7 @@ from models.usuariosLogin import UsuarioLogin
 
 with app.app_context():
     admin_user = os.getenv('FLASK_ADMIN_USER', 'admin')
-    admin_pass = os.getenv('FLASK_ADMIN_PASSWORD', 'Admin1234')
+    admin_pass = os.getenv('FLASK_ADMIN_PASSWORD', 'admin')
     
     if not UsuarioLogin.query.filter_by(usuario=admin_user).first():
         admin = UsuarioLogin(

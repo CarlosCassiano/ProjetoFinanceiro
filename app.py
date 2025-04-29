@@ -38,7 +38,15 @@ def index():
 def inicial():
     if 'usuario_id' not in session:
         return redirect('/')
-    return render_template('inicial.html')
+
+    tipo_usuario = session.get('tipo_usuario')
+    nome_usuario = session.get('usuario_nome')
+    
+    return render_template(
+        'inicial.html',
+        tipo_usuario=tipo_usuario,
+        nome_usuario=nome_usuario
+    )
 
 @app.route('/analise_credito')
 def analise_credito():
@@ -236,7 +244,7 @@ def consultar_tipos_equipamentos():
 
 ##############################################################################
 
-# Cadastrar usuario (ROTA ATUALIZADA)
+# Cadastrar usuario
 @app.route('/usuarios', methods=['POST'])
 def cadastrar_usuario():
     #Verifica se o usuario é admin
@@ -268,19 +276,19 @@ def cadastrar_usuario():
         'usuario': novo_usuario.as_dict()
     }), 201
 
-# Consultar usuarios (ROTA ATUALIZADA - Já estava correta)
+# Consultar usuarios 
 @app.route('/usuarios', methods=['GET'])
 def consultar_usuarios():
     usuarios = UsuarioLogin.query.all()
     return jsonify([usuario.as_dict() for usuario in usuarios]), 200
 
-# Listar apenas um usuario (ROTA ATUALIZADA - Já estava correta)
+# Listar apenas um usuario 
 @app.route('/usuarios/<uuid:usuario_id>', methods=['GET'])
 def consultar_usuario(usuario_id):
     usuario = UsuarioLogin.query.get_or_404(usuario_id)
     return jsonify(usuario.as_dict()), 200
 
-# Atualizar usuario (ROTA ATUALIZADA)
+# Atualizar usuario 
 @app.route('/usuarios/<uuid:usuario_id>', methods=['PATCH'])
 def atualizar_usuario(usuario_id):
     usuario = UsuarioLogin.query.get_or_404(usuario_id)
@@ -300,7 +308,7 @@ def atualizar_usuario(usuario_id):
         'usuario': usuario.as_dict()
     }), 200
 
-# Deletar usuario (ROTA ATUALIZADA - Já estava correta)
+# Deletar usuario 
 @app.route('/usuarios/<uuid:usuario_id>', methods=['DELETE'])
 def deletar_usuario(usuario_id):
     usuario = UsuarioLogin.query.get_or_404(usuario_id)
@@ -308,7 +316,7 @@ def deletar_usuario(usuario_id):
     db.session.commit()
     return jsonify({'message': 'Usuário deletado com sucesso!'}), 200
 
-# ROTA NOVA: Autenticação
+# Autenticação
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -332,6 +340,7 @@ def login():
     
     return jsonify({'message': 'Credenciais inválidas'}), 401
 
+# Logout
 @app.route('/logout', methods=['POST'])
 def logout():
     # Remove os dados da sessão
@@ -339,6 +348,7 @@ def logout():
     session.pop('usuario_nome', None)
     session.pop('tipo_usuario', None)
     return jsonify({'message': 'Logout realizado com sucesso', 'redirect': '/'}), 200
+
 
 
 if __name__ == '__main__':
