@@ -4,7 +4,6 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import db
 from models.cliente import Cliente
-from models.vendedores import Vendedor
 from models.cidades import Cidade
 from models.equipamentos import Equipamento
 from models.tipo_equipamento import TipoEquipamento
@@ -117,30 +116,6 @@ def deletar_cliente(cliente_id):
     db.session.commit()
     return jsonify({'message': 'Cliente deletado com sucesso!'}), 200
 
-###################################################################################################
-
-#Cadastrar vendedor
-@app.route('/adicionar-vendedor', methods=['POST'])
-def adicionar_vendedor():
-    data = request.get_json()
-    nome_vendedor = data.get('vendedor')
-
-    # Verifica se o vendedor já existe
-    if Vendedor.query.filter_by(nome=nome_vendedor).first():
-        return jsonify({'message': 'Vendedor já existe!'}), 400
-
-    # Cria e adiciona um novo vendedor
-    novo_vendedor = Vendedor(nome=nome_vendedor)
-    db.session.add(novo_vendedor)
-    db.session.commit()
-
-    return jsonify({'message': 'Vendedor adicionado com sucesso!'}), 201
-
-#Listar vendedores
-@app.route('/vendedores', methods=['GET'])
-def listar_vendedores():
-    vendedores = Vendedor.query.all()
-    return jsonify([vendedor.as_dict() for vendedor in vendedores]), 200
 
 ###################################################################################################
 
@@ -350,6 +325,11 @@ def logout():
     return jsonify({'message': 'Logout realizado com sucesso', 'redirect': '/'}), 200
 
 
+# Lista usuários por tipo
+@app.route('/usuarios/tipo/<tipo_usuario>', methods=['GET'])
+def listar_usuarios_por_tipo(tipo_usuario):
+    usuarios = UsuarioLogin.query.filter_by(tipo=tipo_usuario).all()
+    return jsonify([usuario.as_dict() for usuario in usuarios]), 200
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')

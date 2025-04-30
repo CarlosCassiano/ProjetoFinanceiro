@@ -114,6 +114,24 @@ h2 {
     background-color: rgba(1, 174, 214, 0.1);
 }
 
+#busca-cliente {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 20px;
+    display: block;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#busca-cliente:focus {
+    border-color: rgb(1, 174, 214);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(1, 174, 214, 0.2);
+}
+
 /* Ações na tabela */
 #tabela-clientes td:last-child {
     text-align: center;
@@ -150,4 +168,32 @@ h2 {
     #cliente-form {
         padding: 15px;
     }
+}
+
+.situacao {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+}
+
+.aprovado {
+    background-color: #28a745; /* Verde */
+}
+
+.negado {
+    background-color: #dc3545; /* Vermelho */
+}
+
+.valor-250 {
+    background-color: #ffc107; /* Amarelo */
+    color: #000;
+}
+
+.valor-500 {
+    background-color: #fd7e14; /* Laranja */
+    color: #000;
 }

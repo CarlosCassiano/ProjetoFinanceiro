@@ -100,16 +100,16 @@ function editarEquipamento(equipamento) {
 // Função para carregar os vendedores no select
 async function carregarVendedores() {
     try {
-        const response = await fetch('http://localhost:8080/vendedores');
+        const response = await fetch('http://localhost:8080/usuarios');
         const vendedores = await response.json();
 
         const vendedorSelect = document.getElementById('usuario-select');
         vendedorSelect.innerHTML = '<option value="">Selecione o Usuario</option>'; // Limpa o conteúdo do select
 
-        vendedores.forEach(vendedor => {
+        vendedores.forEach(u => {
             const option = document.createElement('option');
-            option.value = vendedor.nome;
-            option.textContent = vendedor.nome;
+            option.value = u.usuario;
+            option.textContent = u.usuario;
             vendedorSelect.appendChild(option);
         });
     } catch (error) {

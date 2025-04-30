@@ -58,6 +58,24 @@ async function carregarClientes() {
                 minute: '2-digit'
             });
 
+            let classeSituacao = '';
+            switch (cliente.situacao) {
+                case 'Aprovado':
+                    classeSituacao = 'aprovado';
+                    break;
+                case 'Negado':
+                    classeSituacao = 'negado';
+                    break;
+                case 'R$250,00':
+                    classeSituacao = 'valor-250';
+                    break;
+                case 'R$500,00':
+                    classeSituacao = 'valor-500';
+                    break;
+                default:
+                    classeSituacao = '';
+        }
+
             row.innerHTML = `
                 <td>${dataFormatada}</td>
                 <td>${cliente.nome}</td>
@@ -65,7 +83,7 @@ async function carregarClientes() {
                 <td>${cliente.cnpj}</td>
                 <td>${cliente.vendedor}</td>
                 <td>${cliente.localizacao}</td>
-                <td>${cliente.situacao}</td>
+                <td><span class="situacao ${classeSituacao}">${cliente.situacao}</span></td>
                 <td>${cliente.score}</td>
                 <td>${cliente.consultor}</td>
                 <td>${cliente.observacao || ''}</td>
@@ -81,6 +99,7 @@ async function carregarClientes() {
         console.error('Erro ao carregar clientes:', error);
     }
 }
+
 
 // Preenche o formulário com os dados do cliente para editar
 function editarCliente(cliente) {
@@ -98,20 +117,39 @@ function editarCliente(cliente) {
 // Carregar Vendedores
 async function carregarVendedores() {
     try {
-        const response = await fetch('http://localhost:8080/vendedores');
+        const response = await fetch('http://localhost:8080/usuarios/tipo/vendedor');
         const vendedores = await response.json();
 
         const vendedorSelect = document.getElementById('vendedor-select');
-        vendedorSelect.innerHTML = '<option value="">Selecione o Vendedor</option>';  // Limpa as opções existentes
+        vendedorSelect.innerHTML = '<option value="">Selecione o Vendedor</option>';
 
-        vendedores.forEach(vendedor => {
+        vendedores.forEach(v => {
             const option = document.createElement('option');
-            option.value = vendedor.nome;
-            option.textContent = vendedor.nome;
+            option.value = v.usuario;
+            option.textContent = v.usuario;
             vendedorSelect.appendChild(option);
         });
     } catch (error) {
         console.error('Erro ao carregar vendedores:', error);
+    }
+}
+
+async function carregarConsultores() {
+    try {
+        const response = await fetch('http://localhost:8080/usuarios/tipo/consultor');
+        const consultores = await response.json();
+
+        const consultorSelect = document.getElementById('consultor-select');
+        consultorSelect.innerHTML = '<option value="">Selecione o Consultor</option>';
+
+        consultores.forEach(c => {
+            const option = document.createElement('option');
+            option.value = c.usuario;
+            option.textContent = c.usuario;
+            consultorSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Erro ao carregar consultores:', error);
     }
 }
 
@@ -135,8 +173,28 @@ async function carregarCidades() {
         console.error('Erro ao carregar cidades:', error);
     }
 }
+
+function filtrarClientes() {
+    var input = document.getElementById("busca-cliente");
+    var filtro = input.value.toLowerCase();
+    var tabela = document.getElementById("tabela-clientes");
+    var linhas = tabela.getElementsByTagName("tr");
+
+    for (var i = 1; i < linhas.length; i++) {
+        var linha = linhas[i];
+        var cpf = linha.cells[2].textContent.toLowerCase();  // CPF está na coluna 3
+        var cnpj = linha.cells[3].textContent.toLowerCase(); // CNPJ está na coluna 4
+        if (cpf.includes(filtro) || cnpj.includes(filtro)) {
+            linha.style.display = "";
+        } else {
+            linha.style.display = "none";
+        }
+    }
+}
+
 window.onload = function() {
     carregarVendedores();
+    carregarConsultores();
     carregarCidades();
 }
 
