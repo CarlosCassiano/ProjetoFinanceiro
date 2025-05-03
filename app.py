@@ -8,6 +8,8 @@ from models.cidades import Cidade
 from models.equipamentos import Equipamento
 from models.tipo_equipamento import TipoEquipamento
 from models.usuariosLogin import UsuarioLogin
+from models.agenda import Evento
+from datetime import datetime
 import os
 
 app = Flask(__name__)
@@ -217,7 +219,7 @@ def consultar_tipos_equipamentos():
     tipos_equipamentos = TipoEquipamento.query.all()
     return jsonify([tipo_equipamento.as_dict() for tipo_equipamento in tipos_equipamentos]), 200
 
-##############################################################################
+###################################################################################################
 
 # Cadastrar usuario
 @app.route('/usuarios', methods=['POST'])
@@ -291,6 +293,8 @@ def deletar_usuario(usuario_id):
     db.session.commit()
     return jsonify({'message': 'Usuário deletado com sucesso!'}), 200
 
+###################################################################################################
+
 # Autenticação
 @app.route('/login', methods=['POST'])
 def login():
@@ -324,6 +328,7 @@ def logout():
     session.pop('tipo_usuario', None)
     return jsonify({'message': 'Logout realizado com sucesso', 'redirect': '/'}), 200
 
+###################################################################################################
 
 # Lista usuários por tipo
 @app.route('/usuarios/tipo/<tipo_usuario>', methods=['GET'])
@@ -331,7 +336,83 @@ def listar_usuarios_por_tipo(tipo_usuario):
     usuarios = UsuarioLogin.query.filter_by(tipo=tipo_usuario).all()
     return jsonify([usuario.as_dict() for usuario in usuarios]), 200
 
+
+###################################################################################################
+
+@app.route('/agenda')
+def agenda():
+    if 'usuario_id' not in session:
+        return redirect('/')
+    return render_template('agenda.html')
+
+@app.route('/api/eventos', methods=['GET'])
+def listar_eventos():
+    eventos = Evento.query.all()
+    return jsonify([{
+        'id': e.id,
+        'title': e.titulo,
+        'start': e.inicio.isoformat(),
+        'end': e.fim.isoformat(),
+        'description': e.descricao,
+        'color': e.color,
+        'cidade_id': e.cidade_id
+    } for e in eventos]), 200
+
+@app.route('/api/eventos', methods=['POST'])
+def criar_evento():
+    data = request.get_json()
+
+    # Verifica se 'cidade_id' está presente no corpo da requisição
+    if 'cidade_id' not in data:
+        return jsonify({'error': 'cidade_id é obrigatório!'}), 400
+
+    evento = Evento(
+        titulo=data['title'],
+        descricao=data.get('description', ''),
+        inicio=datetime.fromisoformat(data['start']),
+        fim=datetime.fromisoformat(data['end']),
+        color=data.get('color', '#3788d8'),  # Adiciona a cor padrão
+        cidade_id=data['cidade_id']  # Adiciona o ID da cidade
+    )
+    db.session.add(evento)
+    db.session.commit()
+    return jsonify({'message': 'Evento criado com sucesso!'}), 201
+
+@app.route('/api/eventos/<uuid:evento_id>', methods=['PUT'])
+def atualizar_evento(evento_id):
+    data = request.get_json()
+
+    evento = Evento.query.get_or_404(evento_id)
+    evento.titulo = data['title']
+    evento.descricao = data.get('description', '')
+    evento.inicio = datetime.fromisoformat(data['start'])
+    evento.fim = datetime.fromisoformat(data['end'])
+    evento.color = data.get('color', '#3788d8')
+    evento.cidade_id = data['cidade_id']
+    
+    db.session.commit()
+    return jsonify({'message': 'Evento atualizado com sucesso!'}), 200
+
+@app.route('/api/eventos/cidade/<uuid:cidade_id>', methods=['GET'])
+def listar_eventos_por_cidade(cidade_id):
+    try:
+        eventos = Evento.query.filter_by(cidade_id=cidade_id).all()
+        if not eventos:
+            return jsonify([]), 200  # Retorna array vazio com status 200
+            
+        return jsonify([{
+            'id': str(e.id),
+            'title': e.titulo,
+            'start': e.inicio.isoformat(),
+            'end': e.fim.isoformat(),
+            'description': e.descricao,
+            'color': e.color,
+            'cidade_id': str(e.cidade_id)
+        } for e in eventos]), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=8080)
 
 # app.run(debug=True, host='0.0.0.0', port=8080) # Para rodar localmente, descomente esta linha e comente a linha acima

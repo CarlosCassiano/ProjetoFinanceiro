@@ -1,0 +1,188 @@
+:root {
+    --cor-primaria: rgb(1, 174, 214);
+    --cor-primaria-escura: rgb(1, 154, 184);
+    --cor-texto: #333333;
+    --cor-texto-claro: #666666;
+    --cor-borda: #dddddd;
+    --cor-fundo: #f5f9fa;
+    --cor-erro: #dc3545;
+    --cor-sucesso: #28a745;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--cor-texto);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: linear-gradient(135deg, rgba(1, 174, 214, 0.05), white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Calendário */
+#calendar {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal */
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#modal-content {
+    background-color: white;
+    color: var(--cor-texto);
+    font-family: inherit;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    margin: 100px auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+#modal-content h3 {
+    color: var(--cor-primaria);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Formulário no modal */
+#modal-content label {
+    display: block;
+    margin-top: 1rem;
+    color: var(--cor-texto-claro);
+    font-weight: 500;
+}
+
+#modal-content input[type="text"],
+#modal-content input[type="time"],
+#modal-content input[type="color"],
+#modal-content select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.4rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+
+#modal-content input:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+}
+
+/* Botões */
+.btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--cor-primaria);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    background-color: var(--cor-primaria-escura);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(1, 174, 214, 0.25);
+}
+
+.btn-danger {
+    background-color: var(--cor-erro);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #b52a37;
+}
+
+/* Responsivo */
+@media (max-width: 576px) {
+    #calendar {
+        margin: 20px;
+        padding: 1rem;
+    }
+
+    #modal-content {
+        margin: 60px auto;
+        padding: 1.5rem;
+    }
+}
+
+
+.main-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    flex-wrap: wrap;
+}
+
+#calendar {
+    flex: 2;
+    min-width: 600px;
+    max-width: 900px;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.city-filter {
+    margin-top: 20px;
+    flex: 1;
+    min-width: 250px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+}
+
+.city-filter label {
+    font-weight: bold;
+    margin-right: 10px;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--cor-texto-claro);
+}
+
+.city-filter select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
