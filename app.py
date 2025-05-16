@@ -427,8 +427,10 @@ def atualizar_evento(evento_id):
     evento = Evento.query.get_or_404(evento_id)
     evento.titulo = data['title']
     evento.descricao = data.get('description', '')
-    evento.inicio = datetime.fromisoformat(data['start'])
-    evento.fim = datetime.fromisoformat(data['end'])
+    # Converte as strings ISO para datetime (UTC)
+    evento.inicio = datetime.fromisoformat(data['start'].replace('Z', ''))
+    if data['end']:
+        evento.fim = datetime.fromisoformat(data['end'].replace('Z', ''))
     evento.color = data.get('color', '#3788d8')
     evento.cidade_id = data['cidade_id']
     

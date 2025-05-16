@@ -50,7 +50,10 @@ async function carregarClientes() {
         clientes.reverse().forEach(cliente => {
             const row = document.createElement('tr');
 
-            const dataFormatada = new Date(cliente.data).toLocaleString('pt-BR', {
+            const dataOriginal = new Date(cliente.data);
+            const dataAjustada = new Date(dataOriginal.getTime() - (3 * 60 * 60 * 1000)); // Subtrai 3 horas
+
+            const dataFormatada = dataAjustada.toLocaleString('pt-BR', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric',

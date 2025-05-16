@@ -61,6 +61,13 @@ document.addEventListener('DOMContentLoaded', function() {
             day: 'Dia',
             list: 'Lista'
         },
+        timeZone: 'local', // Usa o fuso horário do navegador
+        eventTimeFormat: { // Formato de hora para exibição
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            meridiem: false
+        },
         dayHeaderFormat: { weekday: 'long' },
         titleFormat: { year: 'numeric', month: 'long' },
         allDayText: 'Dia inteiro',
@@ -158,7 +165,11 @@ async function loadCityEvents(cidadeId) {
         const eventSource = {
             id: 'city-' + cidadeId,
             events: function(fetchInfo, successCallback, failureCallback) {
-                fetch(`/api/eventos/cidade/${cidadeId}?start=${fetchInfo.start.toISOString()}&end=${fetchInfo.end.toISOString()}`)
+                // Formata as datas para UTC
+                const startUTC = fetchInfo.start.toISOString();
+                const endUTC = fetchInfo.end.toISOString();
+                
+                fetch(`/api/eventos/cidade/${cidadeId}?start=${startUTC}&end=${endUTC}`)
                     .then(response => {
                         if (!response.ok) throw new Error('Erro ao buscar eventos');
                         return response.json();
@@ -353,10 +364,18 @@ document.getElementById('event-form').addEventListener('submit', function (e) {
 // Função para atualizar evento quando arrastado ou redimensionado
 async function atualizarEventoDragDrop(evento) {
     try {
+        // Corrige o problema de fuso horário criando novas datas sem o deslocamento
+        const startDate = new Date(evento.startStr);
+        const endDate = evento.endStr ? new Date(evento.endStr) : null;
+        
+        // Ajusta para o fuso horário local antes de enviar
+        const adjustedStart = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000);
+        const adjustedEnd = endDate ? new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000) : null;
+
         const eventData = {
             title: evento.title,
-            start: evento.startStr,
-            end: evento.endStr,
+            start: adjustedStart.toISOString(), // Usa a data ajustada
+            end: adjustedEnd ? adjustedEnd.toISOString() : null,
             description: evento.extendedProps.description,
             color: evento.extendedProps.color,
             cidade_id: evento.extendedProps.cidade_id
