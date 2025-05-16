@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/cadastro.css">
+
+       
+</head>
+<body>
+    <div class="container">
+        <div class="cadastro-container">
+            <div class="text-center mb-4">
+                <h2>Cadastro de Usuário</h2>
+                <p class="text-muted">Preencha os dados para cadastrar um novo usuário</p>
+            </div>
+            
+            <form id="cadastroForm">
+                <div class="mb-3">
+                    <label for="usuario" class="form-label">Usuário</label>
+                    <input type="text" class="form-control" id="usuario" required>
+                </div>
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="senha" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+                    <input type="password" class="form-control" id="confirmarSenha" required>
+                </div>
+                <div class="mb-3">
+                    <label for="tipo" class="form-label">Tipo de Usuário</label>
+                    <select class="form-select" id="tipo" required>
+                        <option value="" selected disabled>Selecione um tipo</option>
+                        <option value="admin">Administrador</option>
+                        <option value="consultor">Consultor</option>
+                        <option value="vendedor">Vendedor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-cadastrar">Cadastrar</button>
+            </form>
+            
+            <div id="mensagem" class="mt-3 text-center"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/scriptCadastroUsuario.js"></script>
+</body>
+</html>

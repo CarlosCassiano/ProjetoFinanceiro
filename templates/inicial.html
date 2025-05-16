@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/inicial.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h2>Bem-vindo <span id="usuario_nome"></span></h2>
+            </div>
+            <div class="card-body">
+                <a href="agenda" class="btn btn-primary mb-2 d-block">Abrir Agenda</a>
+                <a href="analise_credito" class="btn btn-primary mb-2 d-block">Análise de Crédito</a>
+                <a href="equipamentos" class="btn btn-primary mb-2 d-block">Equipamentos</a>
+                <p>Tipo de usuário: {{ tipo_usuario }}</p>
+                {% if tipo_usuario == 'admin' %}
+                <a href="cadastro-usuario" class="btn btn-primary mb-2 d-block">Cadastro de Usuários</a>
+                <a href="cadastro-cidades" class="btn btn-primary mb-2 d-block">Cadastro de Cidades</a>
+                <a href="cadastro-equipamento" class="btn btn-primary mb-2 d-block">Cadastro de Equipamentos</a>
+
+                {% endif %}
+                <button id="btnLogout"  class="btn btn-danger mt-3 d-block">Sair</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/scriptInicial.js"></script>
+</body>
+</html>

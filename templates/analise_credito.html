@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Analise de Credito</title>
+    <link rel="stylesheet" href="/static/css/analise.css">
+</head>
+<body>
+    <h1>Verificar credito</h1>
+    <form id="cliente-form">
+        <input type="text" name="nome" placeholder="Nome" required><br>
+        <input type="text" name="cpf" placeholder="CPF"><br>
+        <input type="text" name="cnpj" placeholder="CNPJ"><br>
+        <select name="vendedor" id="vendedor-select">
+            <option value="">Selecione o Vendedor</option>
+            <!-- As opções de vendedores serão inseridas aqui pelo JS -->
+        </select><br>
+        <select name="localizacao" id="localizacao-select">
+            <option value="">Selecione a Cidade</option>
+            <!-- As opções de localizações serão inseridas aqui pelo JS -->
+        </select><br>    
+        <select name="situacao" id="situacao-select">
+            <option value="">Selecione a Situação</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Negado">Negado</option>
+            <option value="R$250,00">R$250,00</option>
+            <option value="R$500,00">R$500,00</option>
+            <option value="Analise">Analise</option>
+        </select><br>
+        <input type="number" name="score" placeholder="Score"><br>
+        <select name="consultor" id="consultor-select">
+            <option value="">Selecione o Consultor</option>
+            <option value="Tania">Tania</option>
+            <option value="Mariana">Mariana</option>
+        </select><br>
+        <textarea name="observacao" placeholder="Observação"></textarea><br>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <h2>Verificados</h2>
+    <input type="text" id="busca-cliente" placeholder="Digite CPF ou CNPJ..." onkeyup="filtrarClientes()" class="form-control" style="margin-bottom: 10px;">
+    <table id="tabela-clientes" border="1">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>CNPJ</th>
+                <th>Vendedor</th>
+                <th>Localização</th>
+                <th>Situação</th>
+                <th>Score</th>
+                <th>Consultor</th>
+                <th>Observação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os clientes serão inseridos aqui pelo JS -->
+        </tbody>
+    </table>
+
+    <script src="/static/js/scriptAnalise.js"></script>
+</body>
+</html>

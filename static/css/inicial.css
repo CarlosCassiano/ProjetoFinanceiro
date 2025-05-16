@@ -1,0 +1,130 @@
+
+:root {
+    --cor-primaria: rgb(1, 174, 214);
+    --cor-primaria-escura: rgb(1, 154, 184);
+    --cor-texto: #333333;
+    --cor-texto-claro: #666666;
+    --cor-borda: #dddddd;
+    --cor-fundo: #f5f9fa;
+    --cor-perigo: #dc3545;
+    --cor-perigo-escuro: #bb2d3b;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card Principal */
+.card {
+    width: 100%;
+    max-width: 500px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: var(--cor-primaria);
+    color: black;
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: none;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.8rem;
+}
+
+.card-body {
+    padding: 2rem;
+    background-color: white;
+}
+
+/* Botões */
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--cor-primaria);
+    color: white;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--cor-primaria-escura);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(1, 174, 214, 0.2);
+}
+
+.btn-danger {
+    background-color: var(--cor-perigo);
+    color: white;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background-color: var(--cor-perigo-escuro);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+.d-block {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Efeitos e Espaçamentos */
+.mb-2 {
+    margin-bottom: 1rem !important;
+}
+
+.mt-3 {
+    margin-top: 1.5rem !important;
+}
+
+/* Sobrescrevendo estilos do Bootstrap */
+.btn-primary {
+    --bs-btn-bg: var(--cor-primaria);
+    --bs-btn-border-color: var(--cor-primaria);
+    --bs-btn-hover-bg: var(--cor-primaria-escura);
+    --bs-btn-hover-border-color: var(--cor-primaria-escura);
+    --bs-btn-active-bg: var(--cor-primaria-escura);
+    --bs-btn-active-border-color: var(--cor-primaria-escura);
+    --bs-btn-disabled-bg: var(--cor-primaria);
+    --bs-btn-disabled-border-color: var(--cor-primaria);
+}
+
+
+/* Responsividade */
+@media (max-width: 576px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .card-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+}
