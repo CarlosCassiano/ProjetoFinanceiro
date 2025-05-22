@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Equipamentos</title>
+    <link rel="stylesheet" href="/static/css/equipamentos.css">
+</head>
+<body>
+    <h1>Equipamentos</h1>
+    <form id="equipamento-form">
+        <select name="usuario" id="usuario-select" required>
+            <option value="">Selecione o Usuario</option>
+            <!-- As opções de usuários serão inseridas aqui pelo JS -->
+        </select><br>
+        <input type="text" name="nome_cliente" placeholder="Nome do cliente"><br>
+        <select name="equipamento" id="equipamento-select" required>
+            <option value="">Selecione o Equipamento</option>
+            <!-- As opções de equipamentos serão inseridas aqui pelo JS -->
+        </select><br>
+        <input type="text" name="quantidade" placeholder="Quantidade"><br>
+        <select name="onu" id="onu-select" required>
+            <option value="">ONU</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+        </select><br>
+        <input type="text" name="rede_wifi" placeholder="Rede Wifi"><br>
+        <input type="text" name="senha_wifi" placeholder="Senha Wifi"><br>
+        <select name="teste" id="teste-select" required>
+            <option value="">Teste</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+        </select><br>
+        <select name="status" id="status-select" required>
+            <option value="">Status</option>
+            <option value="A Configurar">A Configurar</option>
+            <option value="Configurado">Configurado</option>
+        </select><br>
+
+        <select name="cidade" id="cidade-select" required>
+            <option value="">Selecione a Cidade</option>
+            <!-- As opções de cidade serão inseridas aqui pelo JS -->
+        </select><br>
+        <select name="tipo" id="tipo-select" required>
+            <option value="">Tipo</option>
+            <option value="Comodato">Comodato</option>
+            <option value="Locação">Locação</option>
+            <option value="Venda">Venda</option>
+            <option value="Equipamento queimado">Equipamento queimado</option>
+            <option value="Transferência">Transferência</option>
+            <option value="Teste">Teste</option>
+        </select><br>
+        <select name="faturado" id="faturado-select" required>
+            <option value="">Faturado</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+        </select><br>
+        <input type="text" name="nota_fiscal" placeholder="Nota Fiscal"><br>
+        <textarea name="observacao" placeholder="Observação"></textarea><br>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <div class="busca-container">
+        <input type="text" id="busca-cliente" placeholder="🔍 Pesquisar por nome do cliente..." onkeyup="filtrarEquipamentos()">
+    </div>
+    <h2>Equipamentos Cadastrados</h2>
+    <table id="tabela-equipamentos" border="1">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Usuario</th>
+                <th>Nome do cliente</th>
+                <th>Equipamento</th>
+                <th>Quantidade</th>
+                <th>ONU</th>
+                <th>Rede Wifi</th>
+                <th>Senha Wifi</th>
+                <th>Teste</th>
+                <th>Status</th>
+                <th>Cidade</th>
+                <th>Tipo</th>
+                <th>Faturado</th>
+                <th>Nota Fiscal</th>
+                <th>Observação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os equipamentos serão inseridos aqui pelo JS -->
+        </tbody>
+    </table>     
+
+    <script src="/static/js/scriptEquipamentos.js"></script>
+</body>
+</html>

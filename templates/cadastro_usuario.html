@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Usuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/css/cadastro.css">
+
+       
+</head>
+<body>
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-people-fill me-2"></i> Gerenciamento de Usuários</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cadastroModal">
+                <i class="bi bi-plus-lg"></i> Novo Usuário
+            </button>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="userTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="ativos-tab" data-bs-toggle="tab" data-bs-target="#ativos" type="button" role="tab">Ativos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="bloqueados-tab" data-bs-toggle="tab" data-bs-target="#bloqueados" type="button" role="tab">Bloqueados</button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="userTabsContent">
+            <div class="tab-pane fade show active" id="ativos" role="tabpanel">
+                <div class="row" id="usersListAtivos">
+                    <!-- Usuários ativos serão carregados aqui -->
+                </div>
+            </div>
+            <div class="tab-pane fade" id="bloqueados" role="tabpanel">
+                <div class="row" id="usersListBloqueados">
+                    <!-- Usuários bloqueados serão carregados aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div class="modal fade" id="cadastroModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar Novo Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="cadastroForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label">Usuário</label>
+                            <input type="text" class="form-control" id="usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="senha" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+                            <input type="password" class="form-control" id="confirmarSenha" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de Usuário</label>
+                            <select class="form-select" id="tipo" required>
+                                <option value="" selected disabled>Selecione um tipo</option>
+                                <option value="admin">Administrador</option>
+                                <option value="consultor">Consultor</option>
+                                <option value="vendedor">Usuario</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    </div>
+                    <div id="mensagem" class="mx-3 mb-3 text-center"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div class="modal fade" id="edicaoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="edicaoForm">
+                    <input type="hidden" id="edicaoUsuarioId">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="edicaoUsuario" class="form-label">Usuário</label>
+                            <input type="text" class="form-control" id="edicaoUsuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edicaoTipo" class="form-label">Tipo de Usuário</label>
+                            <select class="form-select" id="edicaoTipo" required>
+                                <option value="admin">Administrador</option>
+                                <option value="consultor">Consultor</option>
+                                <option value="vendedor">Usuario</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edicaoSenha" class="form-label">Nova Senha (opcional)</label>
+                            <input type="password" class="form-control" id="edicaoSenha">
+                            <small class="text-muted">Deixe em branco para manter a senha atual</small>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="edicaoStatus">
+                            <label class="form-check-label" for="edicaoStatus">Usuário ativo</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </div>
+                    <div id="edicaoMensagem" class="mx-3 mb-3 text-center"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/scriptCadastroUsuario.js"></script>
+</body>
+</html>

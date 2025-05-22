@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Minha Agenda</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/agenda.css">
+</head>
+<body>
+    <div class="main-container">
+      <!-- Seletor de Cidade -->
+      <div class="city-filter">
+        <label for="cidade">Escolha a cidade:</label>
+        <select id="cidade">
+            <option value="">Selecione uma cidade</option>
+        </select>
+      </div>
+  
+      <div class="calendar-main">
+        <div id="calendar"></div>
+        <div id="mini-calendar"></div>
+      </div>
+    </div>
+  
+    <div id="modal" style="display:none;">
+      <div id="modal-content">
+          <h3>Adicionar/Editar Evento</h3>
+          <div class="form-container">
+              <form id="event-form">
+                  <label for="event-title">Título do evento:</label>
+                  <input type="text" id="event-title" required>
+                  
+                  <label for="event-city">Cidade:</label>
+                  <select id="event-city" required>
+                      <option value="">Selecione uma cidade</option>
+                  </select>
+                  
+                  <label for="event-description">Descrição:</label>
+                  <textarea id="event-description"></textarea>
+                  
+                  <label for="start-time">Hora de início:</label>
+                  <input type="time" id="start-time" required>
+                  
+                  <label for="end-time">Hora de término:</label>
+                  <input type="time" id="end-time" required>
+                  
+                  <label for="event-color">Cor:</label>
+                  <div class="color-selector">
+                      <input type="color" id="event-color" value="#3788d8">
+                      <div class="default-colors">
+                          <!-- Cores padrão serão adicionadas via JavaScript -->
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="button-container">
+            <input class="btn btn-primary" type="submit" form="event-form" value="Salvar evento">
+            <!-- Adicione este botão (só aparece quando editando) -->
+            <button id="btn-excluir" class="btn btn-danger" type="button" style="display: none;" onclick="excluirEvento()">Excluir Evento</button>
+            <button class="btn btn-secondary" type="button" onclick="fecharModal()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  <!-- Calendário -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="/static/js/scriptAgenda.js"></script>
+  </body>
+</html>

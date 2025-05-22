@@ -1,0 +1,438 @@
+:root {
+    --cor-primaria: rgb(1, 174, 214);
+    --cor-primaria-escura: rgb(1, 154, 184);
+    --cor-primaria-clara: rgba(1, 174, 214, 0.1);
+    --cor-texto: #333333;
+    --cor-texto-claro: #666666;
+    --cor-borda: #e0e0e0;
+    --cor-fundo: #f8fafb;
+    --cor-erro: #dc3545;
+    --cor-erro-claro: rgba(220, 53, 69, 0.1);
+    --cor-sucesso: #28a745;
+    --cor-sucesso-claro: rgba(40, 167, 69, 0.1);
+    --sombra: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --sombra-destaque: 0 4px 8px rgba(1, 174, 214, 0.3);
+    --borda-radius: 10px;
+    --transicao: all 0.25s ease;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* Layout Principal */
+.main-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 25px;
+    width: 100%;
+    height: calc(100vh - 40px);
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+/* Container para os dois calendários */
+.calendar-main {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    height: 100%;
+}
+
+/* Filtro de Cidade */
+.city-filter {
+    position: sticky;
+    top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra);
+    height: fit-content;
+}
+
+.city-filter label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--cor-primaria);
+}
+
+.city-filter select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--borda-radius);
+    background-color: white;
+    font-size: 14px;
+    transition: var(--transicao);
+}
+
+.city-filter select:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(1, 174, 214, 0.2);
+}
+
+/* Calendário Principal */
+#calendar {
+    background: white;
+    padding: 20px;
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra);
+    height: 100%;
+    width: 100%;
+}
+
+/* Mini Calendário */
+#mini-calendar {
+    background: white;
+    padding: 15px;
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+/* Estilos específicos para o mini-calendário */
+#mini-calendar .fc-header-toolbar {
+    margin-bottom: 5px !important;
+    padding: 0;
+}
+
+#mini-calendar .fc-toolbar-title {
+    font-size: 1rem !important;
+}
+
+#mini-calendar .fc-col-header-cell {
+    padding: 5px 0;
+    font-size: 0.7rem;
+}
+
+#mini-calendar .fc-daygrid-day-frame {
+    min-height: 30px !important;
+}
+
+#mini-calendar .fc-daygrid-day-number {
+    font-size: 0.8rem;
+}
+
+#mini-calendar .fc-day-today {
+    background-color: var(--cor-primaria-clara);
+}
+
+#mini-calendar .fc-daygrid-day-top {
+    justify-content: center;
+}
+
+#mini-calendar .fc-daygrid-day {
+    cursor: pointer;
+}
+
+#mini-calendar .fc-daygrid-day:hover {
+    background-color: rgba(1, 174, 214, 0.1);
+}
+
+/* FullCalendar - Ajustes gerais */
+.fc {
+    height: 100% !important;
+}
+
+.fc-view-harness {
+    height: 100% !important;
+}
+
+.fc-scrollgrid-section-body table {
+    height: 100%;
+}
+
+.fc-header-toolbar {
+    margin-bottom: 10px !important;
+    padding: 8px 0;
+}
+
+.fc-col-header-cell {
+    padding: 10px 0;
+    background-color: var(--cor-primaria-clara);
+}
+
+.fc-daygrid-day-frame {
+    min-height: 100px;
+}
+
+.fc-event {
+    margin: 1px;
+    padding: 2px 4px;
+    font-size: 0.85em;
+}
+
+/* Modal */
+#modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+#modal-content {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: var(--borda-radius);
+    box-shadow: var(--sombra);
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s ease-out;
+    pointer-events: auto;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Formulário */
+#event-form label {
+    display: block;
+    margin: 15px 0 8px;
+    font-weight: 500;
+    color: var(--cor-texto);
+}
+
+#event-form input,
+#event-form select,
+#event-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--borda-radius);
+    font-size: 14px;
+    transition: var(--transicao);
+    background-color: white;
+}
+
+#event-form input:focus,
+#event-form select:focus,
+#event-form textarea:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(1, 174, 214, 0.2);
+}
+
+#event-description {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Seletor de Cores */
+.color-selector {
+    margin: 15px 0;
+}
+
+.color-selector input[type="color"] {
+    width: 50px;
+    height: 40px;
+    padding: 2px;
+    border-radius: var(--borda-radius);
+    border: 1px solid var(--cor-borda);
+}
+
+.default-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transicao);
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.selected {
+    border-color: var(--cor-texto);
+    transform: scale(1.1);
+}
+
+/* Botões */
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.btn {
+    padding: 12px 20px;
+    border-radius: var(--borda-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transicao);
+    font-size: 14px;
+    text-align: center;
+    flex: 1;
+}
+
+.btn-primary {
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--cor-primaria-escura);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-destaque);
+}
+
+.btn-danger {
+    background-color: var(--cor-erro);
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #bb2d3b;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda);
+}
+
+.btn-secondary:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* Drag and Drop */
+.fc-event-dragging {
+    opacity: 0.7;
+    box-shadow: var(--sombra);
+}
+
+.fc-highlight {
+    background: var(--cor-primaria-clara);
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .calendar-main {
+        grid-template-columns: 1fr;
+    }
+    
+    #mini-calendar {
+        height: auto;
+        position: static;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    
+    .city-filter {
+        position: static;
+        margin-bottom: 20px;
+    }
+    
+    .calendar-main {
+        grid-template-columns: 1fr;
+    }
+    
+    #mini-calendar {
+        order: -1;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .fc-toolbar-title {
+        font-size: 1.2rem !important;
+    }
+    
+    .fc-button {
+        padding: 6px 8px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .fc-col-header-cell {
+        font-size: 0.8rem;
+        padding: 5px 0;
+    }
+    
+    #mini-calendar .fc-header-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    #mini-calendar .fc-toolbar-chunk {
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        padding: 15px;
+    }
+    
+    #calendar,
+    .city-filter {
+        padding: 15px;
+    }
+    
+    #modal-content {
+        padding: 20px;
+        margin: 0 15px;
+    }
+    
+    .button-container {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .color-option {
+        width: 25px;
+        height: 25px;
+    }
+}
