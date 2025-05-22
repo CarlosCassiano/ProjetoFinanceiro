@@ -1,18 +1,28 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> cf1e5a910c84463a2495f76e230b20aa6e913150
 /* Reset e Estilos Base */
 :root {
     --cor-primaria: rgb(1, 174, 214);
     --cor-primaria-escura: rgb(1, 154, 184);
+<<<<<<< HEAD
     --cor-primaria-clara: rgba(1, 174, 214, 0.1);
+=======
+>>>>>>> cf1e5a910c84463a2495f76e230b20aa6e913150
     --cor-texto: #333;
     --cor-texto-claro: #6c757d;
     --cor-borda: #dee2e6;
     --cor-fundo: #f8f9fa;
+<<<<<<< HEAD
     --cor-sucesso: #28a745;
     --cor-aviso: #ffc107;
     --cor-perigo: #dc3545;
     --sombra: 0 4px 20px rgba(0, 0, 0, 0.08);
     --borda-radius: 10px;
     --transicao: all 0.3s ease;
+=======
+>>>>>>> cf1e5a910c84463a2495f76e230b20aa6e913150
 }
 
 body {
@@ -21,6 +31,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     min-height: 100vh;
+<<<<<<< HEAD
     padding: 2rem 0;
 }
 
@@ -264,6 +275,43 @@ body {
 }
 
 /* Formulários */
+=======
+    display: flex;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+}
+
+/* Container do Cadastro */
+.cadastro-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Cabeçalho */
+.cadastro-container h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.text-muted {
+    color: var(--cor-texto-claro) !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Formulário */
+#cadastroForm {
+    margin-top: 1.5rem;
+}
+
+>>>>>>> cf1e5a910c84463a2495f76e230b20aa6e913150
 .form-label {
     font-weight: 500;
     color: var(--cor-texto);
@@ -274,11 +322,16 @@ body {
     padding: 0.75rem 1rem;
     border: 1px solid var(--cor-borda);
     border-radius: 6px;
+<<<<<<< HEAD
     transition: var(--transicao);
+=======
+    transition: all 0.3s ease;
+>>>>>>> cf1e5a910c84463a2495f76e230b20aa6e913150
 }
 
 .form-control:focus, .form-select:focus {
     border-color: var(--cor-primaria);
+<<<<<<< HEAD
     box-shadow: 0 0 0 0.25rem rgba(1, 174, 214, 0.15);
     outline: none;
 }
@@ -320,4 +373,61 @@ body {
     .modal-body {
         padding: 1.25rem;
     }
+=======
+    box-shadow: 0 0 0 0.25rem rgba(1, 174, 214, 0.25);
+    outline: none;
+}
+
+/* Botão */
+.btn-cadastrar {
+    background-color: var(--cor-primaria);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    width: 100%;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-cadastrar:hover {
+    background-color: var(--cor-primaria-escura);
+    transform: translateY(-2px);
+}
+
+/* Mensagem */
+#mensagem {
+    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 6px;
+}
+
+/* Efeitos e Animações */
+.form-control:focus, .form-select:focus {
+    transform: scale(1.01);
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .cadastro-container {
+        padding: 1.5rem;
+    }
+}
+
+/* Sobrescrevendo estilos do Bootstrap se necessário */
+.btn-primary {
+    --bs-btn-bg: var(--cor-primaria);
+    --bs-btn-border-color: var(--cor-primaria);
+    --bs-btn-hover-bg: var(--cor-primaria-escura);
+    --bs-btn-hover-border-color: var(--cor-primaria-escura);
+    --bs-btn-active-bg: var(--cor-primaria-escura);
+    --bs-btn-active-border-color: var(--cor-primaria-escura);
+    --bs-btn-disabled-bg: var(--cor-primaria);
+    --bs-btn-disabled-border-color: var(--cor-primaria);
+>>>>>>> cf1e5a910c84463a2495f76e230b20aa6e913150
 }
